@@ -4,7 +4,7 @@
 set -e
 
 # Error handler
-trap 'echo "An error occurred. Exiting..." >&2' ERR
+#trap 'echo "An error occurred. Exiting..." >&2' ERR
 
 # Variables
 freebsd13_kernel="http://ftp-archive.freebsd.org/pub/FreeBSD-Archive/old-releases/amd64/13.1-RELEASE/kernel.txz"
