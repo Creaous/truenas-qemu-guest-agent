@@ -14,9 +14,6 @@
   gather_facts: true
   remote_user: root
   vars:
-    # ansible_python_interpreter: /usr/bin/python
-    ansible_ssh_port: 22
-    ansible_ssh_common_args: "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
     freebsd13_kernel: "http://ftp-archive.freebsd.org/pub/FreeBSD-Archive/old-releases/amd64/13.1-RELEASE/kernel.txz"
     freebsd13_qga_pkg: "https://pkg.freebsd.org/FreeBSD:13:amd64/latest/All/qemu-guest-agent-9.2.0.pkg"
     qga_backup_dir: "/root/qga_backup"
@@ -40,9 +37,16 @@
       tags:
         - extract_kernel
 
-    - name: Load VirtIO Console driver
-      ansible.builtin.shell: |
-        kldload /boot/modules/virtio_console.ko
+    - name: Check if virtio_console.ko is already loaded
+      ansible.builtin.shell: kldstat -q -m virtio_console
+      register: virtio_console_loaded
+      ignore_errors: true
+      tags:
+        - check_virtio_console
+
+    - name: Load VirtIO Console driver if not loaded
+      ansible.builtin.shell: kldload /boot/modules/virtio_console.ko
+      when: virtio_console_loaded.rc != 0
       register: load_kernel
       failed_when: load_kernel is failed
       tags:

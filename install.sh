@@ -16,8 +16,14 @@ echo -e "\nDownloading FreeBSD 13.1 kernel.txz and extracting virtio_console.ko 
 curl -#O ${freebsd13_kernel} --output-dir /tmp/
 tar -xf /tmp/kernel.txz --strip-components=3 -C /boot/modules/ ./boot/kernel/virtio_console.ko 1> /dev/null
 
-# Load virtio_console.ko driver
-kldload /boot/modules/virtio_console.ko
+# Check if virtio_console.ko is already loaded
+if ! kldstat -q -m virtio_console; then
+    # Load virtio_console.ko driver if not already loaded
+    echo -e "\nLoading virtio_console.ko driver..."
+    kldload /boot/modules/virtio_console.ko
+else
+    echo -e "\nvirtio_console.ko is already loaded."
+fi
 
 # Download and install FreeBSD 13 qemu-guest-agent package
 echo -e "\nDownloading and installing FreeBSD 13 qemu-guest-agent package..."
