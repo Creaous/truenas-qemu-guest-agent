@@ -17,12 +17,12 @@ curl -#O ${freebsd13_kernel} --output-dir /tmp/
 tar -xf /tmp/kernel.txz --strip-components=3 -C /boot/modules/ ./boot/kernel/virtio_console.ko 1> /dev/null
 
 # Check if virtio_console.ko is already loaded
-if ! kldstat -q -m virtio_console; then
+if ! ls /boot/modules/virtio_console.ko; then
     # Load virtio_console.ko driver if not already loaded
     echo -e "\nLoading virtio_console.ko driver..."
     kldload /boot/modules/virtio_console.ko
 else
-    echo -e "\nvirtio_console.ko is already loaded."
+    echo -e "\nvirtio_console.ko is already in modules directory."
 fi
 
 # Download and install FreeBSD 13 qemu-guest-agent package
