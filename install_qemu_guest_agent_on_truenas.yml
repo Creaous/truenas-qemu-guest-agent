@@ -38,7 +38,7 @@
         - extract_kernel
 
     - name: Check if virtio_console.ko is already loaded
-      ansible.builtin.shell: kldstat -q -m virtio_console
+      ansible.builtin.shell: ls /boot/modules/virtio_console.ko
       register: virtio_console_loaded
       ignore_errors: true
       tags:
