@@ -57,7 +57,13 @@ Via bash script:
    ./install.sh
    ```
 
-2. Reboot TrueNAS to apply changes.
+   or alternatively, try this one liner:
+   
+   ```bash
+   source <(curl -L https://raw.githubusercontent.com/Creaous/truenas-qemu-guest-agent/master/install.sh)
+   ```
+
+3. Reboot TrueNAS to apply changes.
 
 Or via ansible:
 
